@@ -11,6 +11,8 @@ class pet:
         print("HP = " + str(self.stats.hp) +"\nHappiness = "+str(self.stats.happiness)+"\nHunger = "+str(self.stats.hunger))
         if (self.stats.sick>0):
             print("%s is sick" % self.name)
+    def setName(self,n):
+        self.name = n
 class stats:
     def __init__(self):
         self.hp = 100       #Range 0 - 100
@@ -42,14 +44,13 @@ moodDict = {
     5:"Hopeful",
     6:"In-Pain",
     7:"Hungry",
-    8:"Energetic"
-    9:"Down"
-        
-        }
+    8:"Energetic",
+    9:"Down",
+    10:"Sleepy"}
 #=========MAIN===============
 x = pet()
-x.name = "Tigger"
+x.setName("Tigger")
 x.printStats()
-x.events[0].action(x)
+x.events[1].action(x)
 x.printStats()
 print(x.log)

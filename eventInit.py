@@ -1,6 +1,5 @@
 class event:
-    def __init__(self,id,mood,description,action,fitness):
-        self.id = id
+    def __init__(self,mood,description,action,fitness):
         self.mood = mood
         self.description = description
         self.action = action
@@ -14,6 +13,5 @@ def testMethod(p):
     p.log += "Test passed\n"
     p.stats.boundCheck()
 def initEvents():
-    x = []
-    x.append(event(1,2,"This is a test",testMethod,50))
+    x = {1:event(2,"This is a test",testMethod,50)}
     return x        
