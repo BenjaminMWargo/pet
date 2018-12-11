@@ -18,8 +18,44 @@ class pet:
         #Health Check
         if (mFuzzyCheck(mIsCritical(self))):
             print("im critical")
+            #Happiness Check
+            #Is Sad
+            if (mFuzzyCheck(mIsSad(self))):
+                print("im sad")
+            #Is Indifferent
+            elif(mFuzzyCheck(mIsIndifferent(self))):
+                print("im indifferent")
+            #Is Happy
+            elif(mFuzzyCheck(mIsHappy(self))):
+                print("im happy")
+
         elif(mFuzzyCheck(mIsHurt(self))):
             print("im hurt")
+             #Happiness Check
+             #Is Sad
+            if (mFuzzyCheck(mIsSad(self))):
+                print("im sad")
+            #Is Indifferent
+            elif(mFuzzyCheck(mIsIndifferent(self))):
+                print("im indifferent")
+            #Is Happy
+            elif(mFuzzyCheck(mIsHappy(self))):
+                print("im happy")
+
+        elif(mFuzzyCheck(mIsHealthy(self))):
+            print("im healthy")
+             #Happiness Check
+             #Is Sad
+            if (mFuzzyCheck(mIsSad(self))):
+                print("im sad")
+            #Is Indifferent
+            elif(mFuzzyCheck(mIsIndifferent(self))):
+                print("im indifferent")
+            #Is Happy
+            elif(mFuzzyCheck(mIsHappy(self))):
+                print("im happy")
+        else:
+            x.mood = 0
 
 class stats:
     def __init__(self):
@@ -61,8 +97,13 @@ x = pet()
 x.setName("Tigger")
 x.printStats()
 x.events[1].action(x)
-x.stats.hp = 35 
+x.stats.hp = 55
+x.stats.happiness = 35
+x.stats.hunger = -80
 x.printStats()
 x.updateMood()
-print(downSlope(25,20,45))
-print(upSlope(45,35,50))
+print(mIsVeryHungry(x))
+print(mIsHungry(x))
+print(mIsNormalHunger(x))
+print(mIsFull(x))
+print(mIsVeryFull(x))
