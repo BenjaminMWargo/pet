@@ -5,7 +5,7 @@ class event:
         self.action = action
         self.fitness = fitness
     def printEvent(self):
-        print("ID:"+str(self.id)+"|Mood:"+str(self.mood)+"|"+self.description+"|Fitness:"+str(self.fitness)) 
+        print("|Mood:"+str(self.mood)+"|"+self.description+"|Fitness:"+str(self.fitness)) 
 def testMethod(p):
     p.stats.hp +=10
     p.stats.happiness += -10

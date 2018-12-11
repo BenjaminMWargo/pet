@@ -1,4 +1,5 @@
 import eventInit
+from fuzzy import *
 
 class pet:
     def __init__(self):
@@ -13,6 +14,13 @@ class pet:
             print("%s is sick" % self.name)
     def setName(self,n):
         self.name = n
+    def updateMood(self):
+        #Health Check
+        if (mFuzzyCheck(mIsCritical(self))):
+            print("im critical")
+        elif(mFuzzyCheck(mIsHurt(self))):
+            print("im hurt")
+
 class stats:
     def __init__(self):
         self.hp = 100       #Range 0 - 100
@@ -33,6 +41,7 @@ class stats:
             self.hunger = -50
         if(self.hunger > 50):
             self.hunger = 50
+
 #=========INIT===============
 moodDict = {
     -1:"All",       #used for events that apply to all
@@ -52,5 +61,8 @@ x = pet()
 x.setName("Tigger")
 x.printStats()
 x.events[1].action(x)
+x.stats.hp = 35 
 x.printStats()
-print(x.log)
+x.updateMood()
+print(downSlope(25,20,45))
+print(upSlope(45,35,50))
