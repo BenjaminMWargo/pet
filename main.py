@@ -137,6 +137,19 @@ class pet:
                     self.mood = 10
         else:
             x.mood = 0
+    def upkeep(self):
+        if(mFuzzyCheck(mIsVeryHungry(self))):
+            #Take damage and lose happiness if starving
+            self.stats.hp -=10
+            self.stats.happiness -=10
+        elif(self.stats.sick>0):
+            #Don't heal and happiness lowers if sick
+            self.stats.happiness -=10
+            self.stats.sick -=1
+        else:
+            self.stats.hp += 10
+        self.stats.age+= 1
+        self.stats.boundCheck()
 
 class stats:
     def __init__(self):
