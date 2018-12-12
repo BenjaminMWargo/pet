@@ -17,43 +17,124 @@ class pet:
     def updateMood(self):
         #Health Check
         if (mFuzzyCheck(mIsCritical(self))):
-            print("im critical")
+            
             #Happiness Check
             #Is Sad
-            if (mFuzzyCheck(mIsSad(self))):
-                print("im sad")
+            if (mFuzzyCheck(mIsSad(self))):               
+                if (mFuzzyCheck(mIsVeryHungry(self))):
+                    self.mood = 1
+                elif(mFuzzyCheck(mIsHungry(self))):
+                    self.mood = 2
+                elif(mFuzzyCheck(mIsNormalHunger(self))):
+                    self.mood = 3
+                elif(mFuzzyCheck(mIsFull(self))):
+                    self.mood = 3
+                elif(mFuzzyCheck(mIsVeryFull(self))):
+                    self.mood = 4
             #Is Indifferent
             elif(mFuzzyCheck(mIsIndifferent(self))):
-                print("im indifferent")
+                if (mFuzzyCheck(mIsVeryHungry(self))):
+                    self.mood = 2
+                elif(mFuzzyCheck(mIsHungry(self))):
+                    self.mood = 2
+                elif(mFuzzyCheck(mIsNormalHunger(self))):
+                    self.mood = 3
+                elif(mFuzzyCheck(mIsFull(self))):
+                    self.mood = 3
+                elif(mFuzzyCheck(mIsVeryFull(self))):
+                    self.mood = 2
             #Is Happy
             elif(mFuzzyCheck(mIsHappy(self))):
-                print("im happy")
+                if (mFuzzyCheck(mIsVeryHungry(self))):
+                    self.mood = 4
+                elif(mFuzzyCheck(mIsHungry(self))):
+                    self.mood = 6
+                elif(mFuzzyCheck(mIsNormalHunger(self))):
+                    self.mood = 6
+                elif(mFuzzyCheck(mIsFull(self))):
+                    self.mood = 5
+                elif(mFuzzyCheck(mIsVeryFull(self))):
+                    self.mood = 6
 
         elif(mFuzzyCheck(mIsHurt(self))):
-            print("im hurt")
+            
              #Happiness Check
              #Is Sad
             if (mFuzzyCheck(mIsSad(self))):
-                print("im sad")
+                if (mFuzzyCheck(mIsVeryHungry(self))):
+                    self.mood = 2
+                elif(mFuzzyCheck(mIsHungry(self))):
+                    self.mood = 9
+                elif(mFuzzyCheck(mIsNormalHunger(self))):
+                    self.mood = 3
+                elif(mFuzzyCheck(mIsFull(self))):
+                    self.mood = 3
+                elif(mFuzzyCheck(mIsVeryFull(self))):
+                    self.mood = 10
             #Is Indifferent
             elif(mFuzzyCheck(mIsIndifferent(self))):
-                print("im indifferent")
+                if (mFuzzyCheck(mIsVeryHungry(self))):
+                    self.mood = 4
+                elif(mFuzzyCheck(mIsHungry(self))):
+                    self.mood = 9
+                elif(mFuzzyCheck(mIsNormalHunger(self))):
+                    self.mood = 1
+                elif(mFuzzyCheck(mIsFull(self))):
+                    self.mood = 5
+                elif(mFuzzyCheck(mIsVeryFull(self))):
+                    self.mood = 10
             #Is Happy
             elif(mFuzzyCheck(mIsHappy(self))):
-                print("im happy")
+                if (mFuzzyCheck(mIsVeryHungry(self))):
+                    self.mood = 5
+                elif(mFuzzyCheck(mIsHungry(self))):
+                    self.mood = 1
+                elif(mFuzzyCheck(mIsNormalHunger(self))):
+                    self.mood = 1
+                elif(mFuzzyCheck(mIsFull(self))):
+                    self.mood = 5
+                elif(mFuzzyCheck(mIsVeryFull(self))):
+                    self.mood = 10
 
         elif(mFuzzyCheck(mIsHealthy(self))):
-            print("im healthy")
+            
              #Happiness Check
              #Is Sad
             if (mFuzzyCheck(mIsSad(self))):
-                print("im sad")
+                if (mFuzzyCheck(mIsVeryHungry(self))):
+                    self.mood = 4
+                elif(mFuzzyCheck(mIsHungry(self))):
+                    self.mood = 9
+                elif(mFuzzyCheck(mIsNormalHunger(self))):
+                    self.mood = 3
+                elif(mFuzzyCheck(mIsFull(self))):
+                    self.mood = 3
+                elif(mFuzzyCheck(mIsVeryFull(self))):
+                    self.mood = 10
             #Is Indifferent
             elif(mFuzzyCheck(mIsIndifferent(self))):
-                print("im indifferent")
+                if (mFuzzyCheck(mIsVeryHungry(self))):
+                    self.mood = 4
+                elif(mFuzzyCheck(mIsHungry(self))):
+                    self.mood = 1
+                elif(mFuzzyCheck(mIsNormalHunger(self))):
+                    self.mood = 1
+                elif(mFuzzyCheck(mIsFull(self))):
+                    self.mood = 8
+                elif(mFuzzyCheck(mIsVeryFull(self))):
+                    self.mood = 8
             #Is Happy
             elif(mFuzzyCheck(mIsHappy(self))):
-                print("im happy")
+                if (mFuzzyCheck(mIsVeryHungry(self))):
+                    self.mood = 5
+                elif(mFuzzyCheck(mIsHungry(self))):
+                    self.mood = 1
+                elif(mFuzzyCheck(mIsNormalHunger(self))):
+                    self.mood = 8
+                elif(mFuzzyCheck(mIsFull(self))):
+                    self.mood = 8
+                elif(mFuzzyCheck(mIsVeryFull(self))):
+                    self.mood = 10
         else:
             x.mood = 0
 
@@ -87,7 +168,7 @@ moodDict = {
     3:"Depressed",  #Not Critical, Not happy, Hungry
     4:"Starving",   #Not Critical, Not unhappy, Very Hungry
     5:"Hopeful",
-    6:"In-Pain",
+    6:"Uncomfortable",
     7:"Hungry",
     8:"Energetic",
     9:"Down",
@@ -97,13 +178,9 @@ x = pet()
 x.setName("Tigger")
 x.printStats()
 x.events[1].action(x)
-x.stats.hp = 55
+x.stats.hp = 25
 x.stats.happiness = 35
-x.stats.hunger = -80
+x.stats.hunger = -50
 x.printStats()
 x.updateMood()
-print(mIsVeryHungry(x))
-print(mIsHungry(x))
-print(mIsNormalHunger(x))
-print(mIsFull(x))
-print(mIsVeryFull(x))
+print(moodDict[x.mood])
