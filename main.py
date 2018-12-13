@@ -1,7 +1,6 @@
 import eventInit
-import platform
+import platform, re, os
 from fuzzy import *
-import os
 
 class pet:
     def __init__(self):
@@ -202,14 +201,17 @@ moodDict = {
     8:"Energetic",
     9:"Down",
     10:"Sleepy"}
-
+regex = re.compile('(^\w)*([hsnfp])(?!\w)')
 #=========MAIN===============
 x = initPet()
 clear()
 x.printStats()
 print("=================================")
 while (not x.isPetDead()):
-    y = input("Enter an action (H,S,N,F,P):")
+    y = input("Enter an action (H:Hit,S:Scold,N:Nothing ,F:Feed ,P:Play):").lower()
+    while not regex.match(y):
+        print("Bad input, try again")
+        y = input("Enter an action (H:Hit,S:Scold,N:Nothing ,F:Feed ,P:Play):").lower()
     clear()
     #Get user action
     x.stats.hp -= 10
@@ -238,13 +240,3 @@ while (not x.isPetDead()):
 print("=================================")
 print("%s has died at age %i and felt %s at death." % (x.name,x.stats.age,moodDict[x.mood].lower()))    
 input("Press any key to quit")    
-    
-
-    
-
-
-x.stats.happiness = 35
-x.stats.hunger = -50
-x.printStats()
-x.updateMood()
-print(moodDict[x.mood])
