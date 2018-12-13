@@ -15,10 +15,10 @@ def eventCounter():
 def chaseTailAction(p):
     p.stats.happiness += 10
     p.stats.hunger -=10
-    p.log += "%s chased it's tale for an hour.\n" % p.name
+    p.log += "%s chased it's tail for an hour.\n" % p.name
     p.stats.boundCheck()
 def napAction(p):
-    p.stats.hp += 10
+    p.stats.hp += 5
     p.log += "%s napped all day.\n" % p.name
     p.stats.boundCheck()
 def biteAction(p):
@@ -49,7 +49,7 @@ def playOutsideAction(p):
 def cuddleAction(p):
     p.log += "%s cuddles up next to you.\n" % p.name
     p.stats.happiness +=10
-    p.stats.health +=10
+    p.stats.hp +=10
 def unmotivatedAction(p):
     p.log += "%s is too unmotivated to do anything else.\n" % p.name
 def fightAction(p):
@@ -57,10 +57,10 @@ def fightAction(p):
     pick = random.uniform(0,100)
     if pick> 50:
         p.log += "%s got badly hurt in the fight.\n" % p.name
-        p.health.hp -=40
+        p.stats.hp -=40
     else:
         p.log += "%s seems mostly unharmed.\n" % p.name
-        p.health.hp -=10
+        p.stats.hp -=10
     p.stats.hunger -= 10
 def playInTrafficAction(p):
     p.log += "%s played in on-comming traffic.\n" % p.name
@@ -103,6 +103,12 @@ def initEvents():
         next(gen):event(8,"Cuddle",cuddleAction,50),
         next(gen):event(8,"Chase Tail",chaseTailAction,30),
         next(gen):event(8,"Play in Traffic",playInTrafficAction,20),
+        next(gen):event(9,"Nap",napAction,60),
+        next(gen):event(9,"Unmotivated",unmotivatedAction,50),
+        next(gen):event(10,"Nap",napAction,80),
+        next(gen):event(10,"Unmotivated",unmotivatedAction,20),
+        next(gen):event(10,"Throwup",throwUpAction,30),
+        next(gen):event(10,"Cuddle",cuddleAction,30)
 
 
         }

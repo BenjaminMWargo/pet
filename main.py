@@ -208,7 +208,7 @@ class pet:
         for a in self.events:
             if (self.events[a].mood == x.mood) or (self.events[a].mood == -1):
                 matchedEvents[a]=self.events[a].fitness
-                self.events[a].printEvent()
+                #self.events[a].printEvent()
         #Fitness proportional
         max = sum(matchedEvents.values())
         pick = random.uniform(0,max)
@@ -217,7 +217,7 @@ class pet:
             current += value
             if current > pick:
                 self.prevEvent = key
-                print(key)
+                #print(key)
                 return
 
 class stats:
@@ -230,15 +230,15 @@ class stats:
     
     def boundCheck(self):
         #Keeps stats within their bounds
-        if (self.hp >100):
+        if (self.hp >=100):
             self.hp = 100
-        if(self.happiness > 100):
+        if(self.happiness >= 100):
             self.happiness = 100
-        if(self.happiness < 0):
+        if(self.happiness <= 0):
             self.happiness = 0
-        if(self.hunger < -100):
+        if(self.hunger <= -100):
             self.hunger = -100
-        if(self.hunger > 100):
+        if(self.hunger >= 100):
             self.hunger = 100
 def initPet():
     x = pet()
@@ -292,6 +292,7 @@ while (not x.isPetDead()):
     #Do event
     #Update stats based on event
     x.events[x.prevEvent].action(x)
+    x.stats.boundCheck()
     #Update mood based on new stats
     x.updateMood()
     #Print out stats
