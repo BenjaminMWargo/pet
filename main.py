@@ -11,7 +11,7 @@ class pet:
         self.mood = 0
         self.prevEvent = None
     def printStats(self):
-        print("Age = " + str(self.stats.age) + "\nHP = " + str(self.stats.hp) +"\nHappiness = "+str(self.stats.happiness)+"\nHunger = "+str(self.stats.hunger)+"\nMood:"+str(moodDict[self.mood]))
+        print("Age = " + str(self.stats.age) + "\nHP = " + str(self.stats.hp) +"\nHappiness = "+str(self.stats.happiness)+"\nFullness = "+str(self.stats.hunger)+"\nMood:"+str(moodDict[self.mood]))
         if (self.stats.sick>4):
             print("%s is very sick" % self.name)
         elif (self.stats.sick>1):
