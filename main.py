@@ -1,5 +1,7 @@
 import eventInit
+import platform
 from fuzzy import *
+import os
 
 class pet:
     def __init__(self):
@@ -7,11 +9,15 @@ class pet:
         self.stats = stats()
         self.events = eventInit.initEvents()
         self.log = ""
-        self.mood = "Normal"
+        self.mood = 0
     def printStats(self):
-        print("HP = " + str(self.stats.hp) +"\nHappiness = "+str(self.stats.happiness)+"\nHunger = "+str(self.stats.hunger))
-        if (self.stats.sick>0):
+        print("Age = " + str(self.stats.age) + "\nHP = " + str(self.stats.hp) +"\nHappiness = "+str(self.stats.happiness)+"\nHunger = "+str(self.stats.hunger)+"\nMood:"+str(moodDict[self.mood]))
+        if (self.stats.sick>4):
+            print("%s is very sick" % self.name)
+        elif (self.stats.sick>1):
             print("%s is sick" % self.name)
+        if (self.stats.sick>0):
+            print("%s is slightly sick" % self.name)
     def setName(self,n):
         self.name = n
     def updateMood(self):
@@ -149,8 +155,10 @@ class pet:
         else:
             self.stats.hp += 10
         self.stats.age+= 1
+        self.log = ""
         self.stats.boundCheck()
-
+    def isPetDead(self):
+        return (True if (self.stats.hp <= 0) else False)
 class stats:
     def __init__(self):
         self.hp = 100       #Range 0 - 100
@@ -171,7 +179,15 @@ class stats:
             self.hunger = -50
         if(self.hunger > 50):
             self.hunger = 50
-
+def initPet():
+    x = pet()
+    x.setName(input("Enter a name for your pet:"))
+    return x
+def clear():
+    if (platform.system() == "Windows"):
+        os.system('cls')
+    else:
+        os.system('clear')
 #=========INIT===============
 moodDict = {
     -1:"All",       #used for events that apply to all
@@ -186,12 +202,47 @@ moodDict = {
     8:"Energetic",
     9:"Down",
     10:"Sleepy"}
+
 #=========MAIN===============
-x = pet()
-x.setName("Tigger")
+x = initPet()
+clear()
 x.printStats()
-x.events[1].action(x)
-x.stats.hp = 25
+print("=================================")
+while (not x.isPetDead()):
+    y = input("Enter an action (H,S,N,F,P):")
+    clear()
+    #Get user action
+    x.stats.hp -= 10
+    #Influence events based on action
+
+    #Adjust stats based on action
+    x.stats.age += 1
+    #Upkeep
+
+    #Find next event based on stats
+
+    #Do event
+
+    #Update stats based on event
+
+    #Update mood based on new stats
+
+    #Print out stats
+    x.printStats()
+    #Print out log
+    print("=================================")
+    print(x.log)
+    print("=================================")
+#========
+#Pet died
+print("=================================")
+print("%s has died at age %i and felt %s at death." % (x.name,x.stats.age,moodDict[x.mood].lower()))    
+input("Press any key to quit")    
+    
+
+    
+
+
 x.stats.happiness = 35
 x.stats.hunger = -50
 x.printStats()
