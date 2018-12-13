@@ -1,5 +1,5 @@
 import eventInit
-import platform, re, os
+import platform, re, os, random
 from fuzzy import *
 
 class pet:
@@ -9,6 +9,7 @@ class pet:
         self.events = eventInit.initEvents()
         self.log = ""
         self.mood = 0
+        self.prevEvent = None
     def printStats(self):
         print("Age = " + str(self.stats.age) + "\nHP = " + str(self.stats.hp) +"\nHappiness = "+str(self.stats.happiness)+"\nHunger = "+str(self.stats.hunger)+"\nMood:"+str(moodDict[self.mood]))
         if (self.stats.sick>4):
@@ -83,7 +84,7 @@ class pet:
                 elif(mFuzzyCheck(mIsHungry(self))):
                     self.mood = 9
                 elif(mFuzzyCheck(mIsNormalHunger(self))):
-                    self.mood = 1
+                    self.mood = 0
                 elif(mFuzzyCheck(mIsFull(self))):
                     self.mood = 5
                 elif(mFuzzyCheck(mIsVeryFull(self))):
@@ -93,9 +94,9 @@ class pet:
                 if (mFuzzyCheck(mIsVeryHungry(self))):
                     self.mood = 5
                 elif(mFuzzyCheck(mIsHungry(self))):
-                    self.mood = 1
+                    self.mood = 0
                 elif(mFuzzyCheck(mIsNormalHunger(self))):
-                    self.mood = 1
+                    self.mood = 0
                 elif(mFuzzyCheck(mIsFull(self))):
                     self.mood = 5
                 elif(mFuzzyCheck(mIsVeryFull(self))):
@@ -121,9 +122,9 @@ class pet:
                 if (mFuzzyCheck(mIsVeryHungry(self))):
                     self.mood = 4
                 elif(mFuzzyCheck(mIsHungry(self))):
-                    self.mood = 1
+                    self.mood = 0
                 elif(mFuzzyCheck(mIsNormalHunger(self))):
-                    self.mood = 1
+                    self.mood = 0
                 elif(mFuzzyCheck(mIsFull(self))):
                     self.mood = 8
                 elif(mFuzzyCheck(mIsVeryFull(self))):
@@ -133,7 +134,7 @@ class pet:
                 if (mFuzzyCheck(mIsVeryHungry(self))):
                     self.mood = 5
                 elif(mFuzzyCheck(mIsHungry(self))):
-                    self.mood = 1
+                    self.mood = 0
                 elif(mFuzzyCheck(mIsNormalHunger(self))):
                     self.mood = 8
                 elif(mFuzzyCheck(mIsFull(self))):
@@ -153,16 +154,71 @@ class pet:
             self.stats.sick -=1
         else:
             self.stats.hp += 10
+            self.stats.sick= 0
         self.stats.age+= 1
-        self.log = ""
+        self.stats.hunger -=10
         self.stats.boundCheck()
     def isPetDead(self):
         return (True if (self.stats.hp <= 0) else False)
+    def condition(self,i):
+        if ((i =="h") or (mFuzzyCheck(mIsVeryHungry(self)) and i=="n") or (mFuzzyCheck(mIsVeryFull(self) and i=="f"))):
+            #hit punishment.Also happens for ignoring a starving pet or feeding an extremely full pet
+            self.events[self.prevEvent].fitness = self.events[self.prevEvent].fitness * .5
+        elif ((i=="s") or (mFuzzyCheck(mIsHungry(self)) and i=="n")):
+            #scold punishment, or ignoring a slightly hungry pet
+            self.events[self.prevEvent].fitness = self.events[self.prevEvent].fitness * .75
+        elif (i=="f"):
+            self.events[self.prevEvent].fitness = self.events[self.prevEvent].fitness * 1.25
+        elif ((i=="p") and self.mood ==10):
+            pass
+        elif ((i=="p")):
+            self.events[self.prevEvent].fitness = self.events[self.prevEvent].fitness * 1.25
+        #Prevent negative fitness
+        if (self.events[self.prevEvent].fitness <= 5):
+            self.events[self.prevEvent].fitness = 5
+        if (self.events[self.prevEvent].fitness >= 95):
+            self.events[self.prevEvent].fitness = 95
+        
+    def inputAction(self,i):
+        if ((i =="h") or (mFuzzyCheck(mIsVeryHungry(self)) and i=="n") or (mFuzzyCheck(mIsVeryFull(self) and i=="f"))):
+            #hit punishment.Also happens for ignoring a starving pet or feeding an extremely full pet
+            self.stats.hp -=20
+            self.stats.happiness -=40
+        elif ((i=="s") or (mFuzzyCheck(mIsHungry(self)) and i=="n")):
+            #scold punishment, or ignoring a slightly hungry pet
+            self.stats.happiness -=20
+        elif ((i=="f")):
+            self.stats.hunger +=50
+            self.stats.happiness +=10
+        elif ((i=="p") and self.mood ==10):
+            #Won't play if sleepy
+            self.log += "%s is too tired to play\n" % self.name
+            pass
+        elif ((i=="p")):
+            self.stats.happiness +=20
+    def eventSelection(self):
+        #Get a list of eventIDs that match the current mood
+        matchedEvents = {}
+        for a in self.events:
+            if (self.events[a].mood == x.mood) or (self.events[a].mood == -1):
+                matchedEvents[a]=self.events[a].fitness
+                self.events[a].printEvent()
+        #Fitness proportional
+        max = sum(matchedEvents.values())
+        pick = random.uniform(0,max)
+        current = 0
+        for key,value in matchedEvents.items():
+            current += value
+            if current > pick:
+                self.prevEvent = key
+                print(key)
+                return
+
 class stats:
     def __init__(self):
         self.hp = 100       #Range 0 - 100
         self.happiness = 50 #Range 0 to 100
-        self.hunger = 0     #Range -50 to 50
+        self.hunger = 0     #Range -100 to 100
         self.sick = 0       #Positive int
         self.age = 0        #Positive int
     
@@ -174,10 +230,10 @@ class stats:
             self.happiness = 100
         if(self.happiness < 0):
             self.happiness = 0
-        if(self.hunger < -50):
-            self.hunger = -50
-        if(self.hunger > 50):
-            self.hunger = 50
+        if(self.hunger < -100):
+            self.hunger = -100
+        if(self.hunger > 100):
+            self.hunger = 100
 def initPet():
     x = pet()
     x.setName(input("Enter a name for your pet:"))
@@ -212,17 +268,20 @@ while (not x.isPetDead()):
     while not regex.match(y):
         print("Bad input, try again")
         y = input("Enter an action (H:Hit,S:Scold,N:Nothing ,F:Feed ,P:Play):").lower()
-    clear()
+    #clear()
     #Get user action
-    x.stats.hp -= 10
-    #Influence events based on action
-
+    #Influence previous events based on action
+    x.log = ""
+    if not (x.prevEvent == None):
+        x.condition(y)
     #Adjust stats based on action
-    x.stats.age += 1
+    x.inputAction(y)
     #Upkeep
-
+    x.upkeep()
+    #update mood
+    x.updateMood()
     #Find next event based on stats
-
+    x.eventSelection()
     #Do event
 
     #Update stats based on event
